@@ -1,9 +1,7 @@
 package users
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/aipetto/go-aipetto-users-api/domain/users"
@@ -13,17 +11,13 @@ import (
 
 func CreateUser(c *gin.Context) {
 	var user users.User
-	fmt.Println(user)
-	bytes, err := ioutil.ReadAll(c.Request.Body)
-	if err != nil {
-		// TODO: Handler error
+
+	if err := c.ShouldBindJSON(&user); err != nil {
+		fmt.Println(err)
+		// TODO: return bad request to the caller
 		return
 	}
-	if err := json.Unmarshal(bytes, &user); err != nil {
-		fmt.Println(err.Error())
-		// TODO Handle json error
-		return
-	}
+
 	result, saveErr := services.CreateUser(user)
 	if saveErr != nil {
 		// TODO Handle user creation
