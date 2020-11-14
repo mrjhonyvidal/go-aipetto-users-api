@@ -1,26 +1,28 @@
 package users
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/aipetto/go-aipetto-users-api/domain/users"
 	"github.com/aipetto/go-aipetto-users-api/services"
+	"github.com/aipetto/go-aipetto-users-api/utils/errors"
 	"github.com/gin-gonic/gin"
 )
 
 func CreateUser(c *gin.Context) {
 	var user users.User
 
+	// Take the input request and validate it
 	if err := c.ShouldBindJSON(&user); err != nil {
-		fmt.Println(err)
-		// TODO: return bad request to the caller
+		restErr := errors.NewBadRequestError("invalid json body")
+		c.JSON(restErr.Status, restErr)
 		return
 	}
 
+	// Service
 	result, saveErr := services.CreateUser(user)
 	if saveErr != nil {
-		// TODO Handle user creation
+		c.JSON(saveErr.Status, saveErr)
 		return
 	}
 
