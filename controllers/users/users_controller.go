@@ -3,10 +3,12 @@ package users
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/aipetto/go-aipetto-users-api/domain/users"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/aipetto/go-aipetto-users-api/domain/users"
+	"github.com/aipetto/go-aipetto-users-api/services"
+	"github.com/gin-gonic/gin"
 )
 
 func CreateUser(c *gin.Context) {
@@ -22,10 +24,13 @@ func CreateUser(c *gin.Context) {
 		// TODO Handle json error
 		return
 	}
-	fmt.Println(user)
-	fmt.Println(string(bytes))
-	fmt.Println(err)
-	c.String(http.StatusNotImplemented, "to implement")
+	result, saveErr := services.CreateUser(user)
+	if saveErr != nil {
+		// TODO Handle user creation
+		return
+	}
+
+	c.JSON(http.StatusCreated, result)
 }
 
 func GetUser(c *gin.Context) {
