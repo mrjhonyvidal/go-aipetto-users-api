@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/aipetto/go-aipetto-users-api/domain/users"
-	"github.com/aipetto/go-aipetto-users-api/utils/errors"
+	"github.com/aipetto/go-aipetto-users-api/src/domain/users"
+	"github.com/aipetto/go-aipetto-users-api/src/utils/errors"
 )
 
 func GetUser(userId int64) (*users.User, *errors.RestErr) {

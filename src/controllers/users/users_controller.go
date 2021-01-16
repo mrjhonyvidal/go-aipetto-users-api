@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/aipetto/go-aipetto-users-api/domain/users"
-	"github.com/aipetto/go-aipetto-users-api/services"
-	"github.com/aipetto/go-aipetto-users-api/utils/errors"
+	"github.com/aipetto/go-aipetto-users-api/src/domain/users"
+	"github.com/aipetto/go-aipetto-users-api/src/services"
+	"github.com/aipetto/go-aipetto-users-api/src/utils/errors"
 	"github.com/gin-gonic/gin"
 )
 

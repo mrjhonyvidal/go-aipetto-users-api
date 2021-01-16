@@ -1,8 +1,8 @@
 package app
 
 import (
-	"github.com/aipetto/go-aipetto-users-api/controllers/ping"
-	"github.com/aipetto/go-aipetto-users-api/controllers/users"
+	"github.com/aipetto/go-aipetto-users-api/src/controllers/ping"
+	"github.com/aipetto/go-aipetto-users-api/src/controllers/users"
 )
 
 func mapUrls() {

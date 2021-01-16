@@ -3,7 +3,7 @@ package users
 import (
 	"strings"
 
-	"github.com/aipetto/go-aipetto-users-api/utils/errors"
+	"github.com/aipetto/go-aipetto-users-api/src/utils/errors"
 )
 
 type User struct {
