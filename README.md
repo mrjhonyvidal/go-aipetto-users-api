@@ -30,12 +30,22 @@ Example of console enabled
 
 ```
 GOROOT: where golang is installed. 
-    /usr/local/go
+    Default /usr/local/go
+    export GOROOT=/usr/local/go
+    export PATH=$PATH:$GOROOT/bin
 GOPATH: 
     /Users/{user}go
 ```
 
-Set your environment by following the instructions in https://golang.org/ and git clone our services into GOPATH:
+Set your environment by following the instructions in https://golang.org/ and git clone following the below rules:
+
+GOPATH: Workspace for Go projects:
+- Go < 1.13: Every Go project must be cloned INSIDE of your GOPATH
+- Go > 1.13: Every Go project must be cloned OUTSIDE of your GOPATH
+- Go 1.13 introduces "modules".
+
+Clean: rm -fr /Users/..workspaces/golang/src/github.com/username/project-api
+
 ```
 Example: /home/jvo/go/src/github.com/aipetto/go-aipetto-users-api
 GOPATH    
@@ -47,6 +57,41 @@ GOPATH
 
 Get dependencies:
 ```
-http framework Gin
+go get -u //github.com/gin-gonic/gin (http framework Gin)
 go get -u github.com/gin-gonic/gin
+docker build -t main .
+```
+
+#### Know-how and using Go Modules
+Dependencies in Golang(check different behaviour depend if version is < 1.13 or > 1.13).
+```
+1. Look depedencies in myproject-api
+                            main.go
+                            vendor
+                                github.com
+                                    username
+                                        project
+                                            package
+
+2. Look in GOPATH: Workspace for Go projects
+        - Go < 1.13: Every Go project must be cloned INSIDE of your GOPATH
+        - Go > 1.13: Every Go project must be cloned OUTSIDE of your GOPATH
+        - Go 1.13 introduces "modules".
+
+3. Look in GOROOT: Where Go is installed. Default: /usr/local/go
+        export GOROOT=/usr/local/go
+        export PATH=$PATH:$GOROOT/bin                     
+```
+In the same level of main.go run:
+```
+fatal: could not read Username for 'https://github.com': terminal prompts disabled
+Confirm the import path was entered correctly.
+If this is a private repository, see https://golang.org/doc/faq#git_https for additional information.
+go mod init github.com/aipetto/go-aipetto-users-api
+```
+
+### Troubleshoot
+```
+
+git config --global --add url."git@github.com:".insteadOf "https://github.com/"
 ```
