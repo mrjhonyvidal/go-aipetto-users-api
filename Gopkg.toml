@@ -1,0 +1,57 @@
+#Example from: https://golang.github.io/dep/docs/Gopkg.toml.html#example
+#required = ["github.com/user/thing/cmd/thing"]
+#
+#ignored = [
+#  "github.com/user/project/pkgX",
+#  "bitbucket.org/user/project/pkgA/pkgY"
+#]
+#
+#noverify = ["github.com/something/odd"]
+#
+#[metadata]
+#codename = "foo"
+#
+#[prune]
+#  non-go = true
+#
+#  [[prune.project]]
+#    name = "github.com/project/name"
+#    go-tests = true
+#    non-go = false
+#
+#[[constraint]]
+#  name = "github.com/user/project"
+#  version = "1.0.0"
+#
+#  [constraint.metadata]
+#  property1 = "value1"
+#  property2 = 10
+#
+#[[constraint]]
+#  name = "github.com/user/project2"
+#  branch = "dev"
+#  source = "github.com/myfork/project2"
+#
+#[[override]]
+#  name = "github.com/x/y"
+#  version = "2.4.0"
+#
+#  [override.metadata]
+#  propertyX = "valueX"
+
+# AIPETTO
+#[[constraint]]
+#  branch = "master"
+#  name= "github.com/aipetto/go-aipetto-oauth-api/"
+
+#[[constraint]]
+#name= "github.com/go-sql-driver/mysql"
+#version = "a.b.c"
+
+[[constraint]]
+name= "github.com/gin-gonic/gin"
+version = "1.6.3"
+
+[[prune]]
+go-tests = true
+  unused-packages = true

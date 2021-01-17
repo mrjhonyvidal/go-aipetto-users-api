@@ -122,3 +122,9 @@ Inside src run: go run main.go //go get
 
 Module dependencies are automatically downloaded to the pkg/mod subdirectory of the directory indicated by the GOPATH environment variable. The downloaded contents for a given version of a module are shared among all other modules that require that version, so the go command marks those files and directories as read-only. To remove all downloaded modules, you can pass the -modcache flag to go clean:
 `$ go clean -modcache`
+
+#### Adding dependencies to our project on vendor folder
+```
+Create Gopkg.toml file
+dep init
+```
