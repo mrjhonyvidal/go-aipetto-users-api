@@ -2,7 +2,7 @@ package users
 
 import (
 	"fmt"
-
+	"github.com/aipetto/go-aipetto-users-api/src/utils/date_utils"
 	"github.com/aipetto/go-aipetto-users-api/src/utils/errors"
 )
 
@@ -31,6 +31,9 @@ func (user *User) Save() *errors.RestErr {
 		}
 		return errors.NewBadRequestError(fmt.Sprintf("user %d already exists", user.Id))
 	}
+
+	user.DateCreated = date_utils.GetDateNowInStringFormat()
+
 	usersDB[user.Id] = user
 	return nil
 }
