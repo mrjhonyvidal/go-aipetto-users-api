@@ -2,15 +2,29 @@
 
 ### Run
 ```
-go get -u github.com/gin-gonic/gin
-go run main.go or Run on main.go directly from IDE.
+sudo docker-compose up --build
+```
+
+Check containers with `docker ps`:
+```
+4a686766c72a   go-aipetto-users-api_go-users-service   "./go-users-api"         35 seconds ago   Up 34 seconds                   0.0.0.0:8081->8081/tcp              go-users-api
+4a80fefac883   mysql:latest                            "docker-entrypoint.s…"   35 seconds ago   Up 34 seconds                   0.0.0.0:3306->3306/tcp, 33060/tcp   mysql-container
 ```
 
 ### Running our Docker container
 ```
+go get -u github.com/gin-gonic/gin
+go run main.go or Run on main.go directly from IDE.
 sudo docker build -t users-api .
 sudo docker run -p 8081:8081 users-api:latest
 sudo docker run -p 8081:8081 -p 9200:9200 (ElasticSearch) users-api:latest
+docker run --name aipetto-mysql -e MYSQL_ROOT_PASSWORD=PASSWORD -d mysql:latest
+```
+
+### DB
+```
+docker exec -it aipetto-mysql mysql -uroot -p
+sudo docker logs (check password installed for first time)
 ```
 
 ### Users API
@@ -33,7 +47,7 @@ Example of console enabled
 [GIN] 2020/11/14 - 23:36:25 | 200 |      14.335µs |             ::1 | GET      "/users/123"
 ```
 
-#### Development
+#### GO know-how
 
 ```
 GOROOT: where golang is installed. 
@@ -69,7 +83,7 @@ go get -u github.com/gin-gonic/gin
 docker build -t main .
 ```
 
-#### Know-how and using Go Modules
+#### Using Go Module
 Dependencies in Golang(check different behaviour depend if version is < 1.13 or > 1.13).
 ```
 1. Look depedencies in myproject-api
@@ -124,7 +138,7 @@ go clean -modcache
 Inside src run: go run main.go //go get
 ```
 
-#### know-how
+### Extra
 - https://golang.org/doc/code.html?h=modcache
 
 Module dependencies are automatically downloaded to the pkg/mod subdirectory of the directory indicated by the GOPATH environment variable. The downloaded contents for a given version of a module are shared among all other modules that require that version, so the go command marks those files and directories as read-only. To remove all downloaded modules, you can pass the -modcache flag to go clean:
@@ -134,4 +148,20 @@ Module dependencies are automatically downloaded to the pkg/mod subdirectory of 
 ```
 Create Gopkg.toml file
 dep init
+```
+
+
+###DB MySQL General Troubleshoot Log 
+
+Not accessing from MySQL workbench or other resource or container, add or uncoment bind-address from mysql configs:
+```
+RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf
+sed -i -e "/^bind-address/d" /etc/mysql/my.cnf
+sed -ie "s/^bind-address\s*=\s*127\.0\.0\.1$/#bind-address = 0.0.0.0/"
+
+In my case the folder where it was located inside the container was /etc/my.cnf and the property bind-address did not exist.
+So I added manually below the mysqld and copy from my local machine after had copied from the container.
+sudo docker cp my.cnf aipetto-mysql:/etc/my.cnf
+sudo docker aipetto-mysql stop
+sudo docker aipetto-mysql start
 ```

@@ -15,9 +15,9 @@ ENV WORKPATH=$APP_PATH/src
 COPY . $WORKPATH
 WORKDIR $WORKPATH/src
 
-RUN go build -o users-api .
+RUN go build -o go-users-api .
 
 # Expose port 8081 to the service
 EXPOSE 8081
 
-CMD ["./users-api"]
+CMD ["./go-users-api"]

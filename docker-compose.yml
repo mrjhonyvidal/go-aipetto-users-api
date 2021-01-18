@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  mysql-users-database:
+    image: mysql:latest
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: GhJkLBnM1029
+      MYSQL_DATABASE: aipetto
+      MYSQL_USER: aipetto01
+      MYSQL_PASSWORD: GhJkLBnM1029
+    ports:
+      - "3306:3306"
+    restart: always
+  go-users-service:
+    container_name: go-users-api
+    tty: true
+    build:
+      context: ./
+    volumes:
+      - ./:/go
+    environment:
+      - DB_SERVER=mysql-users-database
+    ports:
+      - "8081:8081"
+    depends_on:
+      - "mysql-users-database"
