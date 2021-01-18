@@ -6,6 +6,13 @@ go get -u github.com/gin-gonic/gin
 go run main.go or Run on main.go directly from IDE.
 ```
 
+### Running our Docker container
+```
+sudo docker build -t users-api .
+sudo docker run -p 8081:8081 users-api:latest
+sudo docker run -p 8081:8081 -p 9200:9200 (ElasticSearch) users-api:latest
+```
+
 ### Users API
   
 Check service

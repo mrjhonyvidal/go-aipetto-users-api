@@ -12,8 +12,8 @@ ENV APP_PATH=$GOPATH/src/$REPO_URL
 # /app/src/github.com/username/go-aipetto-users-api/src
 # Copy the entire source code from the current directory to $WORKPATH
 ENV WORKPATH=$APP_PATH/src
-COPY src $WORKPATH
-WORKDIR $WORKPATH
+COPY . $WORKPATH
+WORKDIR $WORKPATH/src
 
 RUN go build -o users-api .
 
