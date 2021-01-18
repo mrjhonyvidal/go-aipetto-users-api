@@ -2,16 +2,20 @@ version: '3.7'
 services:
   mysql-users-database:
     image: mysql:latest
-    container_name: mysql-container
+    container_name: aipetto-users-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: GhJkLBnM1029
-      MYSQL_DATABASE: aipetto
-      MYSQL_USER: aipetto01
-      MYSQL_PASSWORD: GhJkLBnM1029
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
     ports:
       - "3306:3306"
+    networks:
+      - aipettonet
     restart: always
   go-users-service:
+    env_file:
+      - .env
     container_name: go-users-api
     tty: true
     build:
@@ -19,8 +23,18 @@ services:
     volumes:
       - ./:/go
     environment:
-      - DB_SERVER=mysql-users-database
+      DB_SERVER: mysql-users-database
+      MYSQL_HOST: "${MYSQL_HOST}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
     ports:
       - "8081:8081"
+    networks:
+      - aipettonet
     depends_on:
       - "mysql-users-database"
+networks:
+  aipettonet:
+    driver: bridge

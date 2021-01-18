@@ -1,8 +1,54 @@
 ### AIPETTO  🦴🐾🐈 🐕 🦮 🐻‍❄️ 😾 🐕‍🦺
 
 ### Run
+Set your DB environments, in shell type:
+```
+MYSQL_HOST=0.0.0.0:3306
+MYSQL_DATABASE=aipetto_users_db
+MYSQL_ROOT_PASSWORD=GhJkLBnM1029
+MYSQL_USER=aipetto01
+MYSQL_PASSWORD=GhJkLBnM1029
+
+OR
+
+export MYSQL_HOST=0.0.0.0:3306
+export MYSQL_DATABASE=aipetto_users_db
+export MYSQL_ROOT_PASSWORD=
+export MYSQL_USER=aipetto01
+export MYSQL_PASSWORD=
+```
+
+Check exported variables of your system:
+```
+export -p
+export -p | grep  something
+export -p | less
+export -p | more
+```
+
 ```
 sudo docker-compose up --build
+sudo docker-compose up -d (daemon mode)
+sudo docker-compose up --remove-orphans
+```
+The result should be something like this:
+```
+aipetto-users-mysql     | 2021-01-18T23:21:30.930957Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.22'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+go-users-api            | 2021/01/18 23:21:32 Database successfully configured
+go-users-api            | [GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+go-users-api            |
+go-users-api            | [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+go-users-api            |  - using env: export GIN_MODE=release
+go-users-api            |  - using code:        gin.SetMode(gin.ReleaseMode)
+go-users-api            |
+go-users-api            | [GIN-debug] GET    /ping                     --> github.com/aipetto/go-aipetto-users-api/src/controllers/ping.Ping (3 handlers)
+go-users-api            | [GIN-debug] GET    /users/:user_id           --> github.com/aipetto/go-aipetto-users-api/src/controllers/users.GetUser (3 handlers)
+go-users-api            | [GIN-debug] POST   /users                    --> github.com/aipetto/go-aipetto-users-api/src/controllers/users.CreateUser (3 handlers)
+go-users-api            | [GIN-debug] Listening and serving HTTP on :8081
+go-users-api            | [GIN] 2021/01/18 - 23:21:39 | 200 |      13.708µs |      172.22.0.1 | GET      "/ping"
+go-users-api            | [GIN] 2021/01/18 - 23:21:45 | 201 |     178.364µs |      172.22.0.1 | POST     "/users"
+go-users-api            | [GIN] 2021/01/18 - 23:21:48 | 200 |     114.499µs |      172.22.0.1 | GET      "/users/123"
+go-users-api            | [GIN] 2021/01/18 - 23:21:52 | 404 |     152.793µs |      172.22.0.1 | GET      "/users/456"
 ```
 
 Check containers with `docker ps`:
@@ -11,14 +57,22 @@ Check containers with `docker ps`:
 4a80fefac883   mysql:latest                            "docker-entrypoint.s…"   35 seconds ago   Up 34 seconds                   0.0.0.0:3306->3306/tcp, 33060/tcp   mysql-container
 ```
 
+### Run Dockerfile individually
+```
+cd client
+docker build -f Dockerfile.dev .
+docker run -it -p 3000:3000
+```
+
 ### Running our Docker container
 ```
 go get -u github.com/gin-gonic/gin
 go run main.go or Run on main.go directly from IDE.
-sudo docker build -t users-api .
 sudo docker run -p 8081:8081 users-api:latest
 sudo docker run -p 8081:8081 -p 9200:9200 (ElasticSearch) users-api:latest
 docker run --name aipetto-mysql -e MYSQL_ROOT_PASSWORD=PASSWORD -d mysql:latest
+docker run -p 3306:3306 aipetto-users-mysql (must add the Dockerfile only for Mysql - work in progress)
+docker run user_service
 ```
 
 ### DB
@@ -80,6 +134,7 @@ Get dependencies:
 ```
 go get -u //github.com/gin-gonic/gin (http framework Gin)
 go get -u github.com/gin-gonic/gin
+github.com/go-sql-driver/mysql
 docker build -t main .
 ```
 
@@ -164,4 +219,20 @@ So I added manually below the mysqld and copy from my local machine after had co
 sudo docker cp my.cnf aipetto-mysql:/etc/my.cnf
 sudo docker aipetto-mysql stop
 sudo docker aipetto-mysql start
+```
+
+#### Considering / TODO
+Should we add a explicit network between this two containers? Let's check Kubernetes and overall infra.
+```
+networks:
+  aipettonet:
+    driver: bridge
+    
+In each service add:
+    expose:
+     ...
+    networks:
+      - aipettonet
+    volumes_from:
+      ...    
 ```
