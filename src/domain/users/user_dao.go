@@ -1,16 +1,13 @@
 package users
 
 import (
-	"fmt"
 	"github.com/aipetto/go-aipetto-users-api/src/datasources/mysql/users_db"
 	"github.com/aipetto/go-aipetto-users-api/src/utils/date_utils"
 	"github.com/aipetto/go-aipetto-users-api/src/utils/errors"
-	"strings"
+	"github.com/aipetto/go-aipetto-users-api/src/utils/mysql_utils"
 )
 
 const (
-	indexUniqueEmail	 	= "email_UNIQUE"
-	errorNoRows				= "no rows in result set"
 	queryInsertUser 		= "INSERT INTO users(first_name, last_name, email, date_created) VALUES(?, ?, ?, ?);"
 	queryGetUser 			= "SELECT id, first_name, last_name, email, date_created FROM users WHERE id =?;"
 )
@@ -28,14 +25,8 @@ func (user *User) Get() *errors.RestErr {
 	defer stmt.Close()
 
 	result  := stmt.QueryRow(user.Id)
-	if err := result.Scan(&user.Id, &user.FirstName, &user.LastName, &user.Email, &user.DateCreated); err != nil {
-		if strings.Contains(err.Error(), errorNoRows) {
-			return errors.NewNotFoundError(
-				fmt.Sprintf("user %d not found", user.Id))
-		}
-		fmt.Println(err)
-		return errors.NewInternalServerError(
-			fmt.Sprintf("error when trying to get user %d:%s", user.Id, err.Error()))
+	if getErr := result.Scan(&user.Id, &user.FirstName, &user.LastName, &user.Email, &user.DateCreated); err != nil {
+		return mysql_utils.ParserError(getErr)
 	}
 	return nil
 }
@@ -49,20 +40,14 @@ func (user *User) Save() *errors.RestErr {
 	defer stmt.Close()
 
 	user.DateCreated = date_utils.GetDateNowInStringFormat()
+	insertResult, saveErr := stmt.Exec(user.FirstName, user.LastName, user.Email, user.DateCreated)
 
-	insertResult, err := stmt.Exec(user.FirstName, user.LastName, user.Email, user.DateCreated)
-
-	if err != nil {
-		if strings.Contains(err.Error(), indexUniqueEmail){
-			return errors.NewBadRequestError(fmt.Sprintf("email %s already exists", user.Email))
-		}
-		return errors.NewInternalServerError(
-			fmt.Sprint("Error when trying to save user: %s", err.Error()))
+	if saveErr != nil {
+		return mysql_utils.ParserError(saveErr)
 	}
-
 	userId, err := insertResult.LastInsertId()
 	if err != nil {
-		return errors.NewInternalServerError("Error when trying to save user: %s")
+		return mysql_utils.ParserError(saveErr)
 	}
 
 	user.Id = userId
