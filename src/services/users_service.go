@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/aipetto/go-aipetto-users-api/src/domain/users"
+	"github.com/aipetto/go-aipetto-users-api/src/utils/crypto_utils"
 	"github.com/aipetto/go-aipetto-users-api/src/utils/date_utils"
 	"github.com/aipetto/go-aipetto-users-api/src/utils/errors"
 )
@@ -21,6 +22,14 @@ func CreateUser(user users.User) (*users.User, *errors.RestErr) {
 
 	user.Status = users.StatusActive
 	user.DateCreated = date_utils.GetNowDBFormat()
+
+	hashedPassword, hashingErr := crypto_utils.Hash(user.Password)
+	if hashingErr != nil {
+		return nil, errors.NewInternalServerError("invalid password")
+	}
+
+	user.Password = string(hashedPassword)
+
 	if err := user.Save(); err != nil {
 		return nil, err
 	}

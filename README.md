@@ -236,3 +236,23 @@ In each service add:
     volumes_from:
       ...    
 ```
+
+#### Crypo Bcrypt Know-how
+A Bcrypt hash can be stored in a BINARY(40) column.
+
+BINARY(60), as the other answers suggest, is the easiest and most natural choice, but if you want to maximize storage efficiency, you can save 20 bytes by losslessly deconstructing the hash. I've documented this more thoroughly on GitHub: https://github.com/ademarre/binary-mcf
+
+Bcrypt hashes follow a structure referred to as modular crypt format (MCF). Binary MCF (BMCF) decodes these textual hash representations to a more compact binary structure. In the case of Bcrypt, the resulting binary hash is 40 bytes.
+
+Gumbo did a nice job of explaining the four components of a Bcrypt MCF hash:
+
+$<id>$<cost>$<salt><digest>
+Decoding to BMCF goes like this:
+
+$<id>$ can be represented in 3 bits.
+<cost>$, 04-31, can be represented in 5 bits. Put these together for 1 byte.
+The 22-character salt is a (non-standard) base-64 representation of 128 bits. Base-64 decoding yields 16 bytes.
+The 31-character hash digest can be base-64 decoded to 23 bytes.
+Put it all together for 40 bytes: 1 + 16 + 23
+
+BCrypt generates an implementation-dependent 448-bit hash value. You might need CHAR(56), CHAR(60), CHAR(76), BINARY(56) or BINARY(60)
