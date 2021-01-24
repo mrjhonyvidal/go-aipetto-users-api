@@ -20,6 +20,8 @@ type User struct {
 	Password	string `json:"password"`
 }
 
+type Users []User
+
 // TODO Add more production like validations on email and password.
 func (user *User) Validate() *errors.RestErr {
 	user.FirstName = strings.TrimSpace(user.FirstName)
