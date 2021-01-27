@@ -36,7 +36,7 @@ func init(){
 		panic(err)
 	}
 
-	retryCount := 30
+	retryCount := 15
 	for {
 		if err = Client.Ping(); err != nil {
 			if retryCount == 0 {

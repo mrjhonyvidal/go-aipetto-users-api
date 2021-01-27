@@ -16,7 +16,7 @@ const (
 	queryUpdateUser					= "UPDATE users SET first_name=?, last_name=?, email=? WHERE id=?;"
 	queryDeleteUser					= "DELETE FROM users WHERE id=?"
 	queryFindUserByStatus			= "SELECT id, first_name, last_name, email, date_created, status FROM users WHERE status=?;"
-	queryFindByEmailAndStatusActive = "SELECT id, first_name, last_name, email, date_created, status FROM users WHERE email=? AND status=?;"
+	queryFindByEmailAndStatusActive = "SELECT id, first_name, last_name, email, date_created, status, password FROM users WHERE email=? AND status=?;"
 )
 
 func (user *User) Get() *errors.RestErr {
@@ -62,7 +62,8 @@ func (user *User) FindByEmailAndPassword(requestPassword string) *errors.RestErr
 		&user.LastName,
 		&user.Email,
 		&user.DateCreated,
-		&user.Status); getErr != nil {
+		&user.Status,
+		&user.Password); getErr != nil {
 		if strings.Contains(getErr.Error(), mysql_utils.ErrorNoRows) {
 			return errors.NewNotFoundError("invalid user credentials")
 		}
