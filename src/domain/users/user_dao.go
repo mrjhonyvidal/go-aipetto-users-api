@@ -4,15 +4,19 @@ import (
 	"fmt"
 	"github.com/aipetto/go-aipetto-users-api/src/datasources/mysql/users_db"
 	"github.com/aipetto/go-aipetto-users-api/src/logger"
+	"github.com/aipetto/go-aipetto-users-api/src/utils/crypto_utils"
 	"github.com/aipetto/go-aipetto-users-api/src/utils/errors"
+	"github.com/aipetto/go-aipetto-users-api/src/utils/mysql_utils"
+	"strings"
 )
 
 const (
-	queryInsertUser 		= "INSERT INTO users(first_name, last_name, email, date_created, status, password) VALUES(?, ?, ?, ?, ?, ?);"
-	queryGetUser 			= "SELECT id, first_name, last_name, email, date_created, status FROM users WHERE id =?;"
-	queryUpdateUser			= "UPDATE users SET first_name=?, last_name=?, email=? WHERE id=?;"
-	queryDeleteUser			= "DELETE FROM users WHERE id=?"
-	queryFindUserByStatus	= "SELECT id, first_name, last_name, email, date_created, status FROM users WHERE status=?;"
+	queryInsertUser 				= "INSERT INTO users(first_name, last_name, email, date_created, status, password) VALUES(?, ?, ?, ?, ?, ?);"
+	queryGetUser 					= "SELECT id, first_name, last_name, email, date_created, status FROM users WHERE id =?;"
+	queryUpdateUser					= "UPDATE users SET first_name=?, last_name=?, email=? WHERE id=?;"
+	queryDeleteUser					= "DELETE FROM users WHERE id=?"
+	queryFindUserByStatus			= "SELECT id, first_name, last_name, email, date_created, status FROM users WHERE status=?;"
+	queryFindByEmailAndStatusActive = "SELECT id, first_name, last_name, email, date_created, status FROM users WHERE email=? AND status=?;"
 )
 
 func (user *User) Get() *errors.RestErr {
@@ -38,6 +42,34 @@ func (user *User) Get() *errors.RestErr {
 		&user.Status); err != nil {
 		logger.Error("error when trying to get user by id", getErr)
 		return errors.NewInternalServerError("database error")
+	}
+	return nil
+}
+
+func (user *User) FindByEmailAndPassword(requestPassword string) *errors.RestErr {
+
+	stmt, err := users_db.Client.Prepare(queryFindByEmailAndStatusActive)
+	if err != nil {
+		logger.Error("error when trying to prepare get user by email and password", err)
+		return errors.NewInternalServerError("database error")
+	}
+	defer stmt.Close()
+
+	result := stmt.QueryRow(user.Email, StatusActive)
+	if getErr := result.Scan(
+		&user.Id,
+		&user.FirstName,
+		&user.LastName,
+		&user.Email,
+		&user.DateCreated,
+		&user.Status); getErr != nil {
+		if strings.Contains(getErr.Error(), mysql_utils.ErrorNoRows) {
+			return errors.NewNotFoundError("invalid user credentials")
+		}
+	}
+
+	if verifyPasswordErr := crypto_utils.VerifyPassword(user.Password, requestPassword); verifyPasswordErr != nil {
+			return errors.NewInternalServerError("invalid password")
 	}
 	return nil
 }
@@ -122,7 +154,7 @@ func (user *User) FindByStatus(status string) ([]User, *errors.RestErr) {
 	results := make([]User, 0)
 	for rows.Next(){
 		var user User
-		if err := rows.Scan(&user.Id, &user.FirstName, &user.LastName, &user.Email, &user.DateCreated, &user.Password); err != nil {
+		if err := rows.Scan(&user.Id, &user.FirstName, &user.LastName, &user.Email, &user.DateCreated, &user.Status, &user.Password); err != nil {
 			logger.Error("error when scan user row into user struct", err)
 			return nil, errors.NewInternalServerError("database error")
 		}
