@@ -26,6 +26,14 @@ func NewNotFoundError(message string) *RestErr {
 	}
 }
 
+func InvalidCredentialsError(message string) *RestErr {
+	return &RestErr{
+		Message: message,
+		Status:  http.StatusUnauthorized,
+		Error:   "unauthorized",
+	}
+}
+
 func NewInternalServerError(message string) *RestErr {
 	return &RestErr{
 		Message: message,

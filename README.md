@@ -30,6 +30,8 @@ export -p | more
 sudo docker-compose up --build
 sudo docker-compose up -d (daemon mode)
 sudo docker-compose up --remove-orphans
+
+
 ```
 The result should be something like this:
 ```
@@ -89,6 +91,12 @@ curl -X GET localhost:8080/ping -v
 curl -X GET localhost:8080/users/123 -v
 curl -X POST localhost:8080/users -d '{"id":123, "first_name": "GoPetto", "email": "go@aipetto.com"}' -v
 ```
+
+#### Getting Access Token from our OAuth Go Service when Public APIs
+ ```
+ /users/1?access_token=241dsad124121d21d2141
+ ```
+
 
 Example of console enabled
 ```
@@ -191,7 +199,16 @@ go mod init github.com/aipetto/go-aipetto-users-api
 go clean -modcache
 
 Inside src run: go run main.go //go get
+
+Private repos access, example: go: github.com/aipetto/go-aipetto-oauth-library@v0.2.1: reading github.com/aipetto/go-aipetto-oauth-library/go.mod at revision v0.2.1: unknown revision v0.2.1
+
+go env -w GO111MODULE=on
+go help module-private
+go env -w GOPRIVATE=github.com/aipetto/*
+git config --global url."ssh://git@github.com:aipetto".insteadOf "https://github.com/aipetto"
+git config --global url."https://:x-oauth-basic@github.com:aipetto".insteadOf "https://github.com/aipetto"
 ```
+
 
 ### Extra
 - https://golang.org/doc/code.html?h=modcache

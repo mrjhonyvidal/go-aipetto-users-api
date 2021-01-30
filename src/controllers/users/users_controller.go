@@ -1,12 +1,13 @@
 package users
 
 import (
+	"github.com/aipetto/go-aipetto-oauth-library/src/oauth"
 	"github.com/aipetto/go-aipetto-users-api/src/domain/users"
 	"github.com/aipetto/go-aipetto-users-api/src/services"
 	"github.com/aipetto/go-aipetto-users-api/src/utils/errors"
 	"github.com/gin-gonic/gin"
-	"strconv"
 	"net/http"
+	"strconv"
 )
 
 func getUserIdFromUrl(userIdParam string) (int64, *errors.RestErr){
@@ -37,6 +38,11 @@ func Create(c *gin.Context) {
 }
 
 func Get(c *gin.Context) {
+	if err := oauth.AuthenticateRequest(c.Request); err != nil {
+		c.JSON(err.Status, err)
+		return
+	}
+
 	userId, idErr := getUserIdFromUrl(c.Param("user_id"))
 	if idErr != nil {
 		c.JSON(idErr.Status, idErr)
@@ -44,13 +50,17 @@ func Get(c *gin.Context) {
 	}
 
 	// Call our service layer
-	result, getErr := services.UsersService.GetUser(userId)
+	user, getErr := services.UsersService.GetUser(userId)
 	if getErr != nil {
 		c.JSON(getErr.Status, getErr)
 		return
 	}
 
-	c.JSON(http.StatusOK, result.Marshall(c.GetHeader("X-Public") == "true"))
+	// If request from userID returned, then the owner and we return internal/private information to user
+	if oauth.GetUserId(c.Request) == user.Id {
+		c.JSON(http.StatusOK, user.Marshall(false))
+	}
+	c.JSON(http.StatusOK, user.Marshall(oauth.IsPublic(c.Request)))
 }
 
 func Update(c *gin.Context) {

@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func TokenHash(text string) string {
+func GetTokenMd5(text string) string {
 	hasher := md5.New()
 	defer hasher.Reset()
 	hasher.Write([]byte(text))

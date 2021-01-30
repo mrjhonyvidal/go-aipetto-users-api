@@ -65,7 +65,7 @@ func (user *User) FindByEmailAndPassword(requestPassword string) *errors.RestErr
 		&user.Status,
 		&user.Password); getErr != nil {
 		if strings.Contains(getErr.Error(), mysql_utils.ErrorNoRows) {
-			return errors.NewNotFoundError("invalid user credentials")
+			return errors.InvalidCredentialsError("invalid user credentials")
 		}
 	}
 
