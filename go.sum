@@ -11,6 +11,8 @@ github.com/aipetto/go-aipetto-oauth-library v0.2.0 h1:ZxE5S+8O93z4tZzSN6VcjVc3dv
 github.com/aipetto/go-aipetto-oauth-library v0.2.0/go.mod h1:ZGtYVwqpR2X2iVPveayt2tkatynkCjZBBQMCUaVmN/E=
 github.com/aipetto/go-aipetto-oauth-library v0.2.1 h1:N0YBKyYwZqAPww+OadlEoMmAVTPlGZvPDRxR0dU57c4=
 github.com/aipetto/go-aipetto-oauth-library v0.2.1/go.mod h1:RqfEjGFX6urA+WePO21d00XprOEx5Kg7CkmXcljGoPY=
+github.com/aipetto/go-aipetto-oauth-library v0.2.3 h1:o9+7RYObGoy22EmqXRo40M6bx0Wpi38uIbk0fXuuhHg=
+github.com/aipetto/go-aipetto-oauth-library v0.2.3/go.mod h1:cPb26xS0DFmSFFh1tQFpqnPDGqjrjiemhU14agqe17o=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -97,6 +99,8 @@ github.com/stretchr/testify v1.4.0 h1:2E4SXV/wtOkTonXsotYi4li6zVWxYlZuYNCXe9XRJy
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
 github.com/stretchr/testify v1.6.1 h1:hDPOHmpOpP40lSULcqw7IrRb/u7w6RpDC9399XyoNd0=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
+github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
+github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/ugorji/go v1.1.7 h1:/68gy2h+1mWMrwZFeD1kQialdSzAb432dtpeJ42ovdo=
 github.com/ugorji/go v1.1.7/go.mod h1:kZn38zHttfInRq0xu/PH0az30d+z6vm202qpg1oXVMw=
 github.com/ugorji/go v1.2.3 h1:WbFSXLxDFKVN69Sk8t+XHGzVCD7R8UoAATR8NqZgTbk=

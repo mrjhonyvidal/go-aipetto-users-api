@@ -155,7 +155,7 @@ func (user *User) FindByStatus(status string) ([]User, *errors.RestErr) {
 	results := make([]User, 0)
 	for rows.Next(){
 		var user User
-		if err := rows.Scan(&user.Id, &user.FirstName, &user.LastName, &user.Email, &user.DateCreated, &user.Status, &user.Password); err != nil {
+		if err := rows.Scan(&user.Id, &user.FirstName, &user.LastName, &user.Email, &user.DateCreated, &user.Status); err != nil {
 			logger.Error("error when scan user row into user struct", err)
 			return nil, errors.NewInternalServerError("database error")
 		}

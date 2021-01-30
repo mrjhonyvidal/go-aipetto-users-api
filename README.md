@@ -94,7 +94,7 @@ curl -X POST localhost:8080/users -d '{"id":123, "first_name": "GoPetto", "email
 
 #### Getting Access Token from our OAuth Go Service when Public APIs
  ```
- /users/1?access_token=241dsad124121d21d2141
+ /users/1?access_token_id=241dsad124121d21d2141
  ```
 
 
