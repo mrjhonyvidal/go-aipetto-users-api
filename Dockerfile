@@ -1,6 +1,7 @@
 # Base image
 FROM golang:1.15.6
 
+# Disable go cache as it can generate conflicts on cached tests results
 RUN GOCACHE=OFF
 RUN go env -w GOPRIVATE=github.com/aipetto
 
@@ -18,6 +19,7 @@ ENV WORKPATH=$APP_PATH/src
 COPY . $WORKPATH
 WORKDIR $WORKPATH/src
 
+## Enable Token Access to our private repos
 RUN git config --global url."https://aipetto:91d8c820da5be370cb03a065c394cf5c27ddbaa4@github.com".insteadOf "https://github.com"
 
 RUN go mod tidy

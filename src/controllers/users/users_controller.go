@@ -4,17 +4,17 @@ import (
 	"github.com/aipetto/go-aipetto-oauth-library/src/oauth"
 	"github.com/aipetto/go-aipetto-users-api/src/domain/users"
 	"github.com/aipetto/go-aipetto-users-api/src/services"
-	"github.com/aipetto/go-aipetto-users-api/src/utils/errors"
+	"github.com/aipetto/go-aipetto-utils/src/rest_errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
-func getUserIdFromUrl(userIdParam string) (int64, *errors.RestErr){
+func getUserIdFromUrl(userIdParam string) (int64, *rest_errors.RestErr){
 	// Convert the id from the url into a integer base 64
 	userId, userErr := strconv.ParseInt(userIdParam, 10, 64)
 	if userErr != nil {
-		return 0, errors.NewBadRequestError("user id should be a number")
+		return 0, rest_errors.NewBadRequestError("user id should be a number")
 	}
 	return userId, nil
 }
@@ -24,7 +24,7 @@ func Create(c *gin.Context) {
 
 	// Take the input request and validate it
 	if err := c.ShouldBindJSON(&user); err != nil {
-		restErr := errors.NewBadRequestError("invalid json body")
+		restErr := rest_errors.NewBadRequestError("invalid json body")
 		c.JSON(restErr.Status, restErr)
 		return
 	}
@@ -72,7 +72,7 @@ func Update(c *gin.Context) {
 
 	var user users.User
 	if err := c.ShouldBindJSON(&user); err != nil {
-		restErr := errors.NewBadRequestError("invalid json body")
+		restErr := rest_errors.NewBadRequestError("invalid json body")
 		c.JSON(restErr.Status, restErr)
 		return
 	}
@@ -84,7 +84,7 @@ func Update(c *gin.Context) {
 
 	result, err := services.UsersService.UpdateUser(isPartial, user);
 	if err != nil {
-		restErr := errors.NewBadRequestError("")
+		restErr := rest_errors.NewBadRequestError("")
 		c.JSON(restErr.Status, restErr)
 		return
 	}
@@ -119,7 +119,7 @@ func Search(c *gin.Context) {
 func Login(c *gin.Context) {
 	var request users.LoginRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
-		restErr := errors.NewBadRequestError("invalid json body")
+		restErr := rest_errors.NewBadRequestError("invalid json body")
 		c.JSON(restErr.Status, restErr)
 		return
 	}

@@ -13,6 +13,10 @@ github.com/aipetto/go-aipetto-oauth-library v0.2.1 h1:N0YBKyYwZqAPww+OadlEoMmAVT
 github.com/aipetto/go-aipetto-oauth-library v0.2.1/go.mod h1:RqfEjGFX6urA+WePO21d00XprOEx5Kg7CkmXcljGoPY=
 github.com/aipetto/go-aipetto-oauth-library v0.2.3 h1:o9+7RYObGoy22EmqXRo40M6bx0Wpi38uIbk0fXuuhHg=
 github.com/aipetto/go-aipetto-oauth-library v0.2.3/go.mod h1:cPb26xS0DFmSFFh1tQFpqnPDGqjrjiemhU14agqe17o=
+github.com/aipetto/go-aipetto-oauth-library v0.2.4 h1:cptfKTvHZ55pK0YE12UT4VWbOffo7LU3SO5O40ilHxc=
+github.com/aipetto/go-aipetto-oauth-library v0.2.4/go.mod h1:HYweu3T3WQZ9vf3m0UI2g9lGm/2+dVv1L/po02HBij4=
+github.com/aipetto/go-aipetto-utils v0.1.0 h1:bASa/9fWFzUp1Ym535EbOuhAtni4JR18vAEjRmsOB5w=
+github.com/aipetto/go-aipetto-utils v0.1.0/go.mod h1:jZO4UIeiHoFDI788tQp8zziEAuRtOj8lZhPGiJzK2II=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

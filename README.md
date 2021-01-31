@@ -35,22 +35,26 @@ sudo docker-compose up --remove-orphans
 ```
 The result should be something like this:
 ```
-aipetto-users-mysql     | 2021-01-18T23:21:30.930957Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.22'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
-go-users-api            | 2021/01/18 23:21:32 Database successfully configured
+aipetto-users-mysql     | 2021-01-31T03:17:25.617652Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.23'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+go-users-api            | 2021/01/31 03:17:27 Database successfully configured
 go-users-api            | [GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
-go-users-api            |
+go-users-api            | 
 go-users-api            | [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
 go-users-api            |  - using env: export GIN_MODE=release
 go-users-api            |  - using code:        gin.SetMode(gin.ReleaseMode)
-go-users-api            |
+go-users-api            | 
 go-users-api            | [GIN-debug] GET    /ping                     --> github.com/aipetto/go-aipetto-users-api/src/controllers/ping.Ping (3 handlers)
-go-users-api            | [GIN-debug] GET    /users/:user_id           --> github.com/aipetto/go-aipetto-users-api/src/controllers/users.GetUser (3 handlers)
-go-users-api            | [GIN-debug] POST   /users                    --> github.com/aipetto/go-aipetto-users-api/src/controllers/users.CreateUser (3 handlers)
+go-users-api            | [GIN-debug] POST   /users                    --> github.com/aipetto/go-aipetto-users-api/src/controllers/users.Create (3 handlers)
+go-users-api            | [GIN-debug] GET    /users/:user_id           --> github.com/aipetto/go-aipetto-users-api/src/controllers/users.Get (3 handlers)
+go-users-api            | [GIN-debug] PUT    /users/:user_id           --> github.com/aipetto/go-aipetto-users-api/src/controllers/users.Update (3 handlers)
+go-users-api            | [GIN-debug] PATCH  /users/:user_id           --> github.com/aipetto/go-aipetto-users-api/src/controllers/users.Update (3 handlers)
+go-users-api            | [GIN-debug] DELETE /users/:user_id           --> github.com/aipetto/go-aipetto-users-api/src/controllers/users.Delete (3 handlers)
+go-users-api            | [GIN-debug] GET    /internal/users/search    --> github.com/aipetto/go-aipetto-users-api/src/controllers/users.Search (3 handlers)
+go-users-api            | [GIN-debug] POST   /users/login              --> github.com/aipetto/go-aipetto-users-api/src/controllers/users.Login (3 handlers)
+go-users-api            | {"level":"info","time":"2021-01-31T03:17:27.258Z","msg":"Starting AIPETTO Application..."}
 go-users-api            | [GIN-debug] Listening and serving HTTP on :8081
-go-users-api            | [GIN] 2021/01/18 - 23:21:39 | 200 |      13.708µs |      172.22.0.1 | GET      "/ping"
-go-users-api            | [GIN] 2021/01/18 - 23:21:45 | 201 |     178.364µs |      172.22.0.1 | POST     "/users"
-go-users-api            | [GIN] 2021/01/18 - 23:21:48 | 200 |     114.499µs |      172.22.0.1 | GET      "/users/123"
-go-users-api            | [GIN] 2021/01/18 - 23:21:52 | 404 |     152.793µs |      172.22.0.1 | GET      "/users/456"
+
+
 ```
 
 Check containers with `docker ps`:
