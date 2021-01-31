@@ -38,6 +38,6 @@ func NewInternalServerError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
 		Status: http.StatusInternalServerError,
-		Error: "internat_server_error",
+		Error: "internal_server_error",
 	}
 }
